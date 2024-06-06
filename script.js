@@ -8,7 +8,7 @@ const cities = document.getElementById("cities");
 
 function cityApi() {
   const city = document.getElementById("city-input").value;
-  const cityRequestUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
+  const cityRequestUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
 
   fetch(cityRequestUrl)
     .then((response) => response.json())
