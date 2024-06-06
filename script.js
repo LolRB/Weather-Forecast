@@ -127,4 +127,44 @@ function saveToLocalStorage(cityName, data) {
   localStorage.setItem(cityName, JSON.stringify(weatherData));
 }
 
+function createCityButton(cityName, data) {
+  const cityButton = document.createElement("button");
+  cityButton.className = "button";
+  cityButton.textContent = cityName;
+
+  cityButton.addEventListener("click", function () {
+    const storedData = localStorage.getItem(cityName);
+    if (storedData) {
+      const weatherData = JSON.parse(storedData);
+      displayTodaysWeather(weatherData, cityName);
+      displayNextFiveDaysWeather(weatherData, cityName);
+    } else {
+      console.error("Weather data not found for the selected city.");
+    }
+  });
+
+  cities.appendChild(cityButton);
+}
+
+function displayWeatherDay(dayData, dayLabel, container) {
+  const weatherItem = document.createElement("div");
+  weatherItem.className = "weather-item box";
+
+  const date = new Date(dayData.dt * 1000).toLocaleDateString();
+  const iconUrl = `https://openweathermap.org/img/wn/${dayData.weather[0].icon}@2x.png`;
+  const temperature = (dayData.main.temp - 273.15).toFixed(2);
+  const humidity = dayData.main.humidity;
+  const windSpeed = dayData.wind.speed;
+
+  weatherItem.innerHTML = `
+    <p><strong>${dayLabel} (${date}):</strong></p>
+    <img src="${iconUrl}" alt="${dayData.weather[0].description}">
+    <p><strong>Temperature:</strong> ${temperature} °C</p>
+    <p><strong>Humidity:</strong> ${humidity}%</p>
+    <p><strong>Wind Speed:</strong> ${windSpeed} m/s</p>
+  `;
+
+  container.appendChild(weatherItem);
+}
+
 searchButton.addEventListener("click", cityApi);
